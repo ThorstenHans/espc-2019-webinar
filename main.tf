@@ -8,13 +8,13 @@ locals {
 }
 
 resource "azurerm_resource_group" "espcrg1" {
-  name     = "espc-webinar-live"
+  name     = "espc-webinar-live-${var.environment_name}"
   location = "westus"
   tags     = "${local.all_tags}"
 }
 
 resource "azurerm_app_service_plan" "espcasp1" {
-  name                = "asp-espc-webinar-live"
+  name                = "asp-espc-webinar-live-${var.environment_name}"
   resource_group_name = "${azurerm_resource_group.espcrg1.name}"
   location            = "${azurerm_resource_group.espcrg1.location}"
 
@@ -29,7 +29,7 @@ resource "azurerm_app_service_plan" "espcasp1" {
 }
 
 resource "azurerm_app_service" "espcas1" {
-  name                = "as-espc-webinar-live"
+  name                = "as-espc-webinar-live-${var.environment_name}"
   resource_group_name = "${azurerm_resource_group.espcrg1.name}"
   location            = "${azurerm_resource_group.espcrg1.location}"
   app_service_plan_id = "${azurerm_app_service_plan.espcasp1.id}"
@@ -50,7 +50,7 @@ resource "azurerm_app_service" "espcas1" {
 
 
 resource "azurerm_application_insights" "espcai1" {
-  name                = "ai-espc-webinar-live"
+  name                = "ai-espc-webinar-live-${var.environment_name}"
   resource_group_name = "${azurerm_resource_group.espcrg1.name}"
   location            = "${azurerm_resource_group.espcrg1.location}"
   application_type    = "web"
