@@ -37,11 +37,22 @@ resource "azurerm_app_service" "espcas1" {
     type = "SystemAssigned"
   }
 
+  app_settings = {
+    APPLICATIONINSIGHTS_INSTRUMENTATIONKEY = "${azurerm_application_insights.espcai1.instrumentation_key}"
+  }
   site_config {
     always_on        = true
     linux_fx_version = "DOCKER|nginx:1.7.9"
   }
 
-
   tags = "${local.all_tags}"
+}
+
+
+resource "azurerm_application_insights" "espcai1" {
+  name                = "ai-espc-webinar-live"
+  resource_group_name = "${azurerm_resource_group.espcrg1.name}"
+  location            = "${azurerm_resource_group.espcrg1.location}"
+  application_type    = "web"
+  tags                = "${local.all_tags}"
 }
