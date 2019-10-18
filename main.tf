@@ -27,3 +27,21 @@ resource "azurerm_app_service_plan" "espcasp1" {
 
   tags = "${local.all_tags}"
 }
+
+resource "azurerm_app_service" "espcas1" {
+  name                = "as-espc-webinar-live"
+  resource_group_name = "${azurerm_resource_group.espcrg1.name}"
+  location            = "${azurerm_resource_group.espcrg1.location}"
+  app_service_plan_id = "${azurerm_app_service_plan.espcasp1.id}"
+  identity {
+    type = "SystemAssigned"
+  }
+
+  site_config {
+    always_on        = true
+    linux_fx_version = "DOCKER|nginx:1.7.9"
+  }
+
+
+  tags = "${local.all_tags}"
+}
